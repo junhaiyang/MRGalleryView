@@ -1,5 +1,5 @@
 //
-//  MRGalleryView.m 
+//  MRGalleryView.m
 //
 //  Created by junhai on 12-12-28.
 //  Copyright (c) 2012年 mRocker. All rights reserved.
@@ -37,7 +37,7 @@
     NSInteger galleryCount;
 }
 
-@property (nonatomic,assign) BOOL dataChangeAnimation; 
+@property (nonatomic,assign) BOOL dataChangeAnimation;
 @property (nonatomic,strong) UIScrollView *container;
 
 @end
@@ -58,7 +58,7 @@
 - (id)init
 {
     self = [super init];
-    if (self) { 
+    if (self) {
         [self buildView];
     }
     return self;
@@ -67,7 +67,7 @@
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if (self) { 
+    if (self) {
         [self buildView];
         container.frame=CGRectMake(0, 0, frame.size.width, frame.size.height);
     }
@@ -95,7 +95,7 @@
             
             if ([self.delegate respondsToSelector:@selector(galleryView:cellBoundsChange:)]){
                 [self.delegate galleryView:self  cellBoundsChange:cell];
-            } 
+            }
             
         }
     }
@@ -105,7 +105,7 @@
     sideBarWidth =_sideBarWidth;
     
     container.frame=CGRectMake(0, 0, self.frame.size.width+_sideBarWidth, self.frame.size.height);
-
+    
 }
 
 -(void)setPagingEnabled:(BOOL)_pagingEnabled{
@@ -115,12 +115,14 @@
 
 -(void)buildView{
     
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+    
     positions =[[NSMutableArray alloc] init];
     
-//    self.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"galleryview_bg.png"]];
-    self.backgroundColor=[UIColor colorFromRGB:0x2d3132];
+    //    self.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"galleryview_bg.png"]];
+    self.backgroundColor=UIColorFromRGB(0x2d3132);
     
-    self.dataChangeAnimation = NO; 
+    self.dataChangeAnimation = NO;
     contentQueue=dispatch_queue_create("com.mrocker.galleryView", nil);
     container=[[UIScrollView alloc] init];
     container.scrollsToTop = NO;
@@ -137,7 +139,7 @@
     bounces =_bounces;
     container.bounces=bounces;
 }
-  
+
 
 #pragma mark - Inner Method
 
@@ -197,9 +199,9 @@
                 break;
             }
         }
-    
+        
     }else{
-    //中间
+        //中间
         CGFloat startX = currentCenterX-self.container.frame.size.width/2;
         for (int i=self.currentRow; i>=0; i--) {
             MRGalleryPosition *_position =[positions objectAtIndex:i];
@@ -262,12 +264,12 @@
 -(BOOL)isIsScroll{
     return self.container.decelerating||self.container.dragging;
 }
- 
+
 
 -(void)reloadData{
     [self reloadDataAtIndex:self.currentRow cell:nil];
 }
- 
+
 - (void)reloadDataAtIndex:(NSInteger)index{
     [self reloadDataAtIndex:index cell:nil];
 }
@@ -367,7 +369,7 @@
         }
         return;
     }
-
+    
     //重新定义后续所有cell的坐标
     for (int index = _index; index<galleryCount; index++) {
         MRGalleryPosition *position =[positions objectAtIndex:index];
@@ -407,10 +409,10 @@
             break;
             
         }else{
-        
+            
             MRGalleryCell *cell = [cellValue objectForKey:[NSString stringWithFormat:@"%d",position.index]];
             if(!cell){
-               cell=[self.dataSource galleryView:self cellAtRow:position.index];
+                cell=[self.dataSource galleryView:self cellAtRow:position.index];
             }
             
             cell.frame=CGRectMake(position.x, 0, position.width, self.container.frame.size.height);
@@ -434,7 +436,7 @@
         if(position.x>self.container.contentOffset.x+self.container.frame.size.width){
             break;
         }else{
-        
+            
             
             MRGalleryCell *cell = [cellValue objectForKey:[NSString stringWithFormat:@"%d",position.index]];
             if(!cell){
@@ -459,18 +461,18 @@
     if([self.dataSource respondsToSelector:@selector(galleryViewDidLoadFinished)]){
         [self.dataSource galleryViewDidLoadFinished];
     }
- 
-     self.dataChangeAnimation = NO;
-     [self computePage];
+    
+    self.dataChangeAnimation = NO;
+    [self computePage];
     
 }
- 
+
 
 - (void)insertCellAtIndex:(NSInteger)index  animation:(BOOL)animation{
     
     //TODO 算法比较复杂 后续处理
     
-
+    
 }
 
 - (void)scrollToIndex:(NSInteger)index{
@@ -553,7 +555,7 @@
 
 - (void)resizeGalleryRect:(CGRect)rect{
     [self setFrame:rect];
-     
+    
     //TODO 更好的优化算法
     
     [self drawGalleryView];
@@ -567,7 +569,7 @@
         return;
     
     BOOL scrollLeft=(preX-container.contentOffset.x)>0;
-     
+    
     if(scrollLeft){
         //向左滑动
         
@@ -586,7 +588,7 @@
             }
         }
         [visibleCells removeObjectsInArray:recycleCells];
-         
+        
         
         while (x>self.container.contentOffset.x) {
             _index-=1;
@@ -594,7 +596,7 @@
                 break;
             }
             
-            float iw=[self.dataSource galleryView:self widthForRow:_index]; 
+            float iw=[self.dataSource galleryView:self widthForRow:_index];
             
             MRGalleryCell *cell=[self.dataSource galleryView:self cellAtRow:_index];
             cell.frame=CGRectMake(x-(iw+self.sideBarWidth), 0, iw, self.container.frame.size.height);
@@ -637,7 +639,7 @@
                 break;
             }
             
-            float iw=[self.dataSource galleryView:self widthForRow:_index]; 
+            float iw=[self.dataSource galleryView:self widthForRow:_index];
             
             MRGalleryCell *cell=[self.dataSource galleryView:self cellAtRow:_index];
             cell.frame=CGRectMake(x, 0, iw, self.container.frame.size.height);
@@ -655,13 +657,13 @@
             x+=iw+self.sideBarWidth;
             
         }
-    }  
-     
+    }
+    
 }
 
 
 
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{ 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
     if(galleryCount==0)
         return;
     
@@ -676,7 +678,7 @@
     preX=scrollView.contentOffset.x;
     [self drawGalleryView];
 }
--(void)scrollViewDidScroll:(UIScrollView *)scrollView{ 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
     if(galleryCount==0)
         return;
@@ -689,10 +691,10 @@
     [self drawGalleryView];
     preX=scrollView.contentOffset.x;
     
-  //  NSLog(@"scrollView.contentSize.height:%f    scrollView.frame.size.height:%f",scrollView.contentSize.height,scrollView.frame.size.height);
+    //  NSLog(@"scrollView.contentSize.height:%f    scrollView.frame.size.height:%f",scrollView.contentSize.height,scrollView.frame.size.height);
 }
 
--(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{ 
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     if(galleryCount==0)
         return;
@@ -705,7 +707,7 @@
     [self clearInvisibleCells];
 }
 
--(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{ 
+-(void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     
     if(galleryCount==0)
         return;
