@@ -191,7 +191,7 @@
     }else if(currentCenterX+self.container.frame.size.width/2>self.container.contentSize.width){
         CGFloat startX = self.container.contentSize.width-self.container.frame.size.width;
         
-        for (int i=positions.count-1; i>=0; i--) {
+        for (int i=(int)positions.count-1; i>=0; i--) {
             MRGalleryPosition *_position =[positions objectAtIndex:i];
             if(_position.x<=startX){
                 *showIndex=i;
@@ -203,7 +203,7 @@
     }else{
         //中间
         CGFloat startX = currentCenterX-self.container.frame.size.width/2;
-        for (int i=self.currentRow; i>=0; i--) {
+        for (int i=(int)self.currentRow; i>=0; i--) {
             MRGalleryPosition *_position =[positions objectAtIndex:i];
             if(_position.x<=startX){
                 *showIndex=i;
@@ -301,7 +301,7 @@
     
     CGFloat endX =startX+self.container.frame.size.width;
     
-    for (int i=showIndex; i<galleryCount; i++) {
+    for (int i=(int)showIndex; i<(int)galleryCount; i++) {
         MRGalleryPosition *position =[positions objectAtIndex:i];
         
         if (position.x>=endX) {
@@ -371,7 +371,7 @@
     }
     
     //重新定义后续所有cell的坐标
-    for (int index = _index; index<galleryCount; index++) {
+    for (int index = (int)_index; index<(int)galleryCount; index++) {
         MRGalleryPosition *position =[positions objectAtIndex:index];
         position.x = position.x - removePosition.widthWithSideBar;
         position.index =index;
@@ -401,7 +401,7 @@
     //不考虑界面左右移动问题,直接完全重新绘制所有cell,需要复用cellValue中的数据
     
     //向左绘制
-    for (int index = _index-1; index>=0; index--) {
+    for (int index = (int)_index-1; index>=0; index--) {
         
         MRGalleryPosition *position =[positions objectAtIndex:index];
         
@@ -431,7 +431,7 @@
     }
     
     //向右绘制
-    for (int index = _index; index<galleryCount; index++) {
+    for (int index = (int)_index; index<(int)galleryCount; index++) {
         MRGalleryPosition *position =[positions objectAtIndex:index];
         if(position.x>self.container.contentOffset.x+self.container.frame.size.width){
             break;
