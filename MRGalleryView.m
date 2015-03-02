@@ -387,9 +387,9 @@
     for (MRGalleryCell *cell in visibleCells) {
         if(cell.index >_index){
             //纠正错误的序号问题
-            [cellValue setObject:cell forKey:[NSString stringWithFormat:@"%d",cell.index-1]];
+            [cellValue setObject:cell forKey:[NSString stringWithFormat:@"%d",(int)cell.index-1]];
         }else{
-            [cellValue setObject:cell forKey:[NSString stringWithFormat:@"%d",cell.index]];
+            [cellValue setObject:cell forKey:[NSString stringWithFormat:@"%d",(int)cell.index]];
         }
         
         [cell removeFromSuperview];
@@ -410,7 +410,7 @@
             
         }else{
             
-            MRGalleryCell *cell = [cellValue objectForKey:[NSString stringWithFormat:@"%d",position.index]];
+            MRGalleryCell *cell = [cellValue objectForKey:[NSString stringWithFormat:@"%d",(int)position.index]];
             if(!cell){
                 cell=[self.dataSource galleryView:self cellAtRow:position.index];
             }
@@ -438,7 +438,7 @@
         }else{
             
             
-            MRGalleryCell *cell = [cellValue objectForKey:[NSString stringWithFormat:@"%d",position.index]];
+            MRGalleryCell *cell = [cellValue objectForKey:[NSString stringWithFormat:@"%d",(int)position.index]];
             if(!cell){
                 cell=[self.dataSource galleryView:self cellAtRow:position.index];
             }
